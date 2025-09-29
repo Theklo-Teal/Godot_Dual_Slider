@@ -1,4 +1,5 @@
 @tool
+@abstract
 extends Control
 class_name DualSlider
 
