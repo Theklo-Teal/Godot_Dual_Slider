@@ -3,8 +3,8 @@
 extends Control
 class_name DualSlider
 
-signal value_changing(start:float, stop:float) # Emits signal has the user drags the handles.
-signal value_changed(start:float, stop:float) # Emits signal when the user stops dragging the handles.
+signal value_changing(start:float, stop:float) ## Emits signal has the user drags the handles.
+signal value_changed(start:float, stop:float) ## Emits signal when the user stops dragging the handles.
 
 #TODO make this inherit or mimic the Range class
 #TODO a "set_value_no_signal" function
