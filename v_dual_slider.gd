@@ -1,5 +1,5 @@
 @tool
-@icon("res://modules/Dual_Slider/IconV.svg")
+@icon("./IconV.svg")
 extends DualSlider
 class_name VDualSlider
 
