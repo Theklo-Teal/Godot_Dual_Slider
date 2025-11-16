@@ -6,8 +6,7 @@ Other projects:
 - [The Github for source codes and portfolio](https://github.com/Theklo-Teal)
 - [Ko-fi is where I'll accept donations](https://ko-fi.com/paracortical)
 
-
-<img src="documentation/dual_slider_demo.png" height=300 />
+![Screenshot of dual_slider_demo.png](documentation/dual_slider_demo.png)
 
 # DESCRIPTION
 A custom slider node for use in the Godot Engine, with two scroll values enabling the control of a span in a range.
