@@ -8,6 +8,7 @@ signal value_changed(start:float, stop:float) ## Emits signal when the user stop
 
 #TODO make this inherit or mimic the Range class
 #TODO a "set_value_no_signal" function
+#TODO allow to reverse the positive direction of the range, right-to-left, bottom-to-top
 
 @export var minim : float = 0 : 
 	set(value):
