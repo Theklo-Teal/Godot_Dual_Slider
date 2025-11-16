@@ -1,0 +1,131 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsy5jyvmam8qu"]
+
+[ext_resource type="Script" uid="uid://dtysmvf1jihah" path="res://module/Godot_Dual_Slider/h_dual_slider.gd" id="1_fn8pm"]
+[ext_resource type="Script" uid="uid://bqab32q44i3un" path="res://module/Godot_Dual_Slider/v_dual_slider.gd" id="2_l05ab"]
+
+[sub_resource type="GDScript" id="GDScript_uu6xs"]
+script/source = "extends ColorRect
+
+@export var vrang : DualSlider
+@export var hrang : DualSlider
+@export var vlable_low : Label
+@export var vlable_upp : Label
+@export var hlable_low : Label
+@export var hlable_upp : Label
+
+func _draw() -> void:
+	## Draw a bouncing ball
+	draw_circle(bouncer, 12, Color.RED)
+	
+	# Draw the spanning lines
+	var v_upper = remap(vrang.lower, 0, 100, 0, size.y)
+	draw_line(Vector2(0, v_upper), Vector2(size.x, v_upper), Color.GRAY, 4)
+	
+	var v_lower = remap(vrang.upper, 0, 100, 0, size.y)
+	draw_line(Vector2(0, v_lower), Vector2(size.x, v_lower), Color.GRAY, 4)
+
+	var h_upper = remap(hrang.lower, 0, 100, 0, size.x)
+	draw_line(Vector2(h_upper, 0), Vector2(h_upper, size.y), Color.GRAY, 4)
+	
+	var h_lower = remap(hrang.upper, 0, 100, 0, size.x)
+	draw_line(Vector2(h_lower, 0), Vector2(h_lower, size.y), Color.GRAY, 4)
+	
+	## Draw a rectangle within the overlaping spans if the bouncing ball is enclosed
+	var wind_pos = Vector2(h_upper, v_upper)
+	var wind_siz = Vector2(h_lower, v_lower)  - wind_pos
+	var window = Rect2(wind_pos, wind_siz)
+	if window.has_point(bouncer):
+		draw_rect(window, Color.YELLOW_GREEN)
+
+
+## Update the numbers in the labels
+func _on_v_dual_slider_value_changing(start: float, stop: float) -> void:
+	vlable_low.text = \"Vertical\\nTop: \" + str(roundi(start))
+	vlable_upp.text = \"Bot: \" + str(roundi(stop))
+## Update the numbers in the labels
+func _on_h_dual_slider_value_changing(start: float, stop: float) -> void:
+	hlable_low.text = \"Horizontal\\nLeft: \" + str(roundi(start))
+	hlable_upp.text = \"Right: \" + str(roundi(stop))
+
+
+
+## Updater the position of the bouncing ball
+var bouncer : Vector2
+func _process(_delta: float) -> void:
+	var time_x = wrapf( Time.get_ticks_msec() * 0.001, 0, TAU )
+	var time_y = wrapf( Time.get_ticks_msec() * 0.01, 0, TAU )
+	bouncer = Vector2( 
+			remap(time_x, 0, TAU, 0, size.x),
+			size.y * 0.5 + sin(time_y) * 200
+			)
+	queue_redraw()
+"
+
+[node name="Dual_Slider_Demo" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer2" node_paths=PackedStringArray("vrang", "hrang", "vlable_low", "vlable_upp", "hlable_low", "hlable_upp")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.25565878, 0.25565878, 0.25565878, 1)
+script = SubResource("GDScript_uu6xs")
+vrang = NodePath("../../VBoxContainer/VDualSlider")
+hrang = NodePath("../HBoxContainer/HDualSlider")
+vlable_low = NodePath("../../VBoxContainer/Label")
+vlable_upp = NodePath("../../VBoxContainer/Label2")
+hlable_low = NodePath("../HBoxContainer/Label")
+hlable_upp = NodePath("../HBoxContainer/Label2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Horizontal
+Left: 69"
+
+[node name="HDualSlider" type="Control" parent="VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("1_fn8pm")
+lower = 69.0
+upper = 96.0
+metadata/_custom_type_script = "uid://dtysmvf1jihah"
+
+[node name="Label2" type="Label" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Right: 96"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Vertical
+Top: 25"
+
+[node name="VDualSlider" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("2_l05ab")
+lower = 16.0
+upper = 42.0
+metadata/_custom_type_script = "uid://bqab32q44i3un"
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Bot:42"
+
+[connection signal="value_changing" from="VBoxContainer2/HBoxContainer/HDualSlider" to="VBoxContainer2/ColorRect" method="_on_h_dual_slider_value_changing"]
+[connection signal="value_changing" from="VBoxContainer/VDualSlider" to="VBoxContainer2/ColorRect" method="_on_v_dual_slider_value_changing"]
