@@ -7,11 +7,13 @@ Other projects:
 - [Ko-fi is where I'll accept donations](https://ko-fi.com/paracortical)
 
 
+<img src="documentation/dual_slider_demo.png" height=300 />
+
 # DESCRIPTION
 A custom slider node for use in the Godot Engine, with two scroll values enabling the control of a span in a range.
 
 # INSTALLATION
-This isn't technically a Godot Plugin, it doesn't use the special Plugin features of the Editor, so don't put it inside the "plugin" folder. The folder of the tool can be anywhere else you want, though, but I suggest having it in a "modules" folder.
+This isn't technically a Godot Plugin, it doesn't use the special Plugin features of the Editor, so don't put it inside the "addon" folder. The folder of the tool can be anywhere else you want, though, but I suggest having it in a "modules" folder.
 
 After that, the «class_name DualSlider» registers the tool so you can add it to a project like you add any Godot node. There's the horizontal and vertical style of slider.
 
